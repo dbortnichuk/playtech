@@ -21,7 +21,6 @@ sealed trait LinkedList[+A] {
 
 }
 
-
 case object Nil extends LinkedList[Nothing]
 
 case class Cons[+A](head: A, tail: LinkedList[A]) extends LinkedList[A]
@@ -54,11 +53,9 @@ object LinkedList {
     }
   }
 
-
   def reverse[A](l: LinkedList[A]): LinkedList[A] = {
     foldLeft(l, Nil: LinkedList[A])((nl, el) => Cons(el, nl))
   }
-
 
   def zipWith[A, B, C](a: LinkedList[A], b: LinkedList[B])(f: (A, B) => C): LinkedList[C] = {
     (a, b) match {
@@ -71,14 +68,13 @@ object LinkedList {
   def flattern[A](l: LinkedList[LinkedList[A]]): LinkedList[A] =
     foldLeft(l, Nil: LinkedList[A])(append)
 
-
   def flatMap[A, B](l: LinkedList[A])(f: A => LinkedList[B]): LinkedList[B] =
     flattern(map(l)(f))
 
-
   def filter[A, B](l: LinkedList[A])(f: A => Boolean): LinkedList[A] = {
     val list = reverse(l)
-    @annotation.tailrec
+
+    @tailrec
     def loop(oldL: LinkedList[A], newL: LinkedList[A]): LinkedList[A] = {
       oldL match {
         case Nil => newL
@@ -87,7 +83,6 @@ object LinkedList {
           else loop(xs, newL)
       }
     }
-
     loop(list, Nil)
   }
 }
